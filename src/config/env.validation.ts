@@ -21,6 +21,13 @@ class EnvironmentVariables {
 
   @IsString()
   CONTAINER_NAME: string;
+
+  //SWAGGER CONFIGURATION
+  @IsString()
+  SWAGGER_TITLE: string;
+
+  @IsString()
+  SWAGGER_DESCRIPTION: string;
 }
 
 export function validate(config: Record<string, unknown>) {
