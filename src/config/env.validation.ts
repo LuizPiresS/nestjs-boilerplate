@@ -22,7 +22,26 @@ class EnvironmentVariables {
   @IsString()
   CONTAINER_NAME: string;
 
-  //SWAGGER CONFIGURATION
+  // DATABASE CONFIGURATION
+  @IsNumber()
+  DATABASE_PORT: number;
+
+  @IsString()
+  DATABASE_HOST: string;
+
+  @IsString()
+  DATABASE_USER: string;
+
+  @IsString()
+  DATABASE_PASS: string;
+
+  @IsString()
+  DATABASE_NAME: string;
+
+  @IsString()
+  DATABASE_URL: string;
+
+  // SWAGGER CONFIGURATION
   @IsString()
   SWAGGER_TITLE: string;
 
