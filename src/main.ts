@@ -1,9 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { UserNotFoundInterceptor } from './common/errors/interceptors/user-not-found.interceptor';
+import { ValidationPipe } from '@nestjs/common';
+import { EmailAlreadyRegisteredInterceptor } from './common/errors/interceptors/email-already-registered.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Pipes
+  app.useGlobalPipes(new ValidationPipe());
+
+  // Interceptors
+  app.useGlobalInterceptors(new EmailAlreadyRegisteredInterceptor());
+  app.useGlobalInterceptors(new UserNotFoundInterceptor());
 
   // Swagger configuration
   const config = new DocumentBuilder()
@@ -18,6 +28,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.APP_PORT);
+  await app.listen(process.env.APP_PORT || 3000);
 }
 bootstrap();

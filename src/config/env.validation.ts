@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { IsEnum, IsNumber, validateSync, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString, validateSync } from 'class-validator';
 
 enum Environment {
   Development = 'development',
@@ -9,44 +9,20 @@ enum Environment {
 }
 
 class EnvironmentVariables {
-  // APP CONFIG
+  //  APP CONFIGURATION
   @IsEnum(Environment)
   NODE_ENV: Environment;
 
   @IsNumber()
   APP_PORT: number;
 
+  // LOGGER
   @IsString()
-  BASE_URL: string;
+  LOG_FILE_NAME: string;
 
-  @IsString()
-  CONTAINER_NAME: string;
-
-  // DATABASE CONFIGURATION
+  // BCRYPT
   @IsNumber()
-  DATABASE_PORT: number;
-
-  @IsString()
-  DATABASE_HOST: string;
-
-  @IsString()
-  DATABASE_USER: string;
-
-  @IsString()
-  DATABASE_PASS: string;
-
-  @IsString()
-  DATABASE_NAME: string;
-
-  @IsString()
-  DATABASE_URL: string;
-
-  // SWAGGER CONFIGURATION
-  @IsString()
-  SWAGGER_TITLE: string;
-
-  @IsString()
-  SWAGGER_DESCRIPTION: string;
+  SALTS: number;
 }
 
 export function validate(config: Record<string, unknown>) {
