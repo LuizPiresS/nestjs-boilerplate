@@ -1,4 +1,4 @@
-import { CreateUserInputDto } from '../dto/create-user-input.dto';
+import { UserInputDto } from '../dtos/user.input.dto';
 import { IUsersRepository } from './interfaces/users.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,7 +12,7 @@ export class UsersRepository implements IUsersRepository {
     private readonly userRepository: Repository<Users>,
   ) {}
 
-  async create(data: CreateUserInputDto): Promise<Users> {
+  async create(data: UserInputDto): Promise<Users> {
     const newUser = this.userRepository.create(data);
     return this.userRepository.save(newUser);
   }

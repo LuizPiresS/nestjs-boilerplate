@@ -1,12 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IUsersRepository } from '../repositories/interfaces/users.repository';
 import { IUsersService } from './interfaces/users.service';
-import { CreateUserInputDto } from '../dto/create-user-input.dto';
+import { UserInputDto } from '../dtos/user.input.dto';
 import { ILoggerService } from '../../logger/services/interfaces/logger-service.interface';
 import { IHashingService } from '../../hashing/services/interfaces/hashing-service.interface';
 import { Users } from '../entities/user.entity';
 import { EmailAlreadyRegisteredError } from '../../../common/errors/types/email-already-registered.error';
 import { ConfigService } from '@nestjs/config';
+import { UserOutputDto } from '../dtos/user.output.dto';
 
 @Injectable()
 export class UsersService implements IUsersService {
@@ -23,7 +24,7 @@ export class UsersService implements IUsersService {
     private readonly configService: ConfigService,
   ) {}
 
-  async create(createUserDto: CreateUserInputDto): Promise<Users> {
+  async create(createUserDto: UserInputDto): Promise<UserOutputDto> {
     const existingUser = await this.usersRepository.countUsersByEmail(
       createUserDto.email,
     );
@@ -39,13 +40,24 @@ export class UsersService implements IUsersService {
       +this.configService.get('SALTS'),
     );
 
-    return this.usersRepository.create({
+    const newUser = await this.usersRepository.create({
       ...createUserDto,
       password: hashedPassword,
     });
+
+    return this.usersToUserOutputDto(newUser);
   }
 
-  findByEmail(email: string): Promise<Users[]> {
-    return this.usersRepository.findByEmail(email);
+  async findByEmail(email: string): Promise<UserOutputDto[]> {
+    const users = await this.usersRepository.findByEmail(email);
+    return users.map(this.usersToUserOutputDto.bind(this));
+  }
+
+  private async usersToUserOutputDto(user: Users): Promise<UserOutputDto> {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
   }
 }

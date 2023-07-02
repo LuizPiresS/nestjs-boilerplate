@@ -1,5 +1,5 @@
 import { IUsersRepository } from './interfaces/users.repository';
-import { CreateUserInputDto } from '../dto/create-user-input.dto';
+import { UserInputDto } from '../dtos/user.input.dto';
 import { Users } from '../entities/user.entity';
 
 export class UsersRepositoryMemory implements IUsersRepository {
@@ -9,7 +9,7 @@ export class UsersRepositoryMemory implements IUsersRepository {
     this.users = [];
   }
 
-  async create(data: CreateUserInputDto): Promise<Users> {
+  async create(data: UserInputDto): Promise<Users> {
     this.users.push(data);
     return {
       id: 1,

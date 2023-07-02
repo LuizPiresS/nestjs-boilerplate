@@ -6,10 +6,8 @@ import { LoggerModule } from '../../logger/logger.module';
 import { ConfigModule } from '@nestjs/config';
 import { HashingModule } from '../../hashing/hashing.module';
 import { UsersRepositoryMemory } from '../repositories/users.repository.memory';
-import { Users } from '../entities/user.entity';
 import { EmailAlreadyRegisteredError } from '../../../common/errors/types/email-already-registered.error';
 import { IHashingService } from '../../hashing/services/interfaces/hashing-service.interface';
-import * as bcrypt from 'bcrypt';
 describe('UsersService', () => {
   let service: UsersService;
   let hashingService: IHashingService;
@@ -33,7 +31,7 @@ describe('UsersService', () => {
     test('should create new user', async () => {
       hashingService.hashingPassword = jest.fn().mockResolvedValue({});
 
-      const result: Users = await service.create({
+      const result = await service.create({
         name: 'teste',
         email: 'teste@teste.com',
         password: 'teste',
@@ -43,7 +41,6 @@ describe('UsersService', () => {
         id: 1,
         name: 'teste',
         email: 'teste@teste.com',
-        password: 'teste',
       });
 
       expect(hashingService.hashingPassword).toHaveBeenCalledTimes(1);

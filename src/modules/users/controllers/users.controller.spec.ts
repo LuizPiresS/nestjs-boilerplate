@@ -37,7 +37,6 @@ describe('UsersController', () => {
       id: 1,
       name: 'teste',
       email: 'teste@teste.com',
-      password: 'teste',
     });
   });
 });

@@ -1,7 +1,7 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { IUsersService } from '../services/interfaces/users.service';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserInputDto } from '../dto/create-user-input.dto';
+import { UserInputDto } from '../dtos/user.input.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth('JWT')
@@ -25,7 +25,7 @@ export class UsersController {
     description: 'User created',
   })
   @Post()
-  public async create(@Body() createUserDto: CreateUserInputDto) {
+  public async create(@Body() createUserDto: UserInputDto) {
     return this.usersService.create(createUserDto);
   }
 }
